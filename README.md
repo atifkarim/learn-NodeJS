@@ -17,3 +17,8 @@ Here, I will try to practice Node JS
 
 - Install yarn: `npm install -g yarn`
 - Eg: Would like to add react package using yarn : `yarn add react`
+
+## Environment Setup, Extension, Coding Guideline
+
+- Follow [Airbnb](https://github.com/airbnb/javascript) guideline
+- 
