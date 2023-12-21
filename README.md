@@ -13,3 +13,7 @@ Here, I will try to practice Node JS
   ```bash
   npm i lodash
   ```
+### How to add yarn pkg
+
+- Install yarn: `npm install -g yarn`
+- Eg: Would like to add react package using yarn : `yarn add react`
