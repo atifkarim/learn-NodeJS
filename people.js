@@ -1,3 +1,3 @@
 const people = ['abc', 'def', 'ghi'];
-
-module.exports = people;
+const a = 2;
+module.exports = { people, a };
