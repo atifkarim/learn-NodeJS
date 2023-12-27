@@ -23,6 +23,7 @@ console.log('coreinfo: ', os.cpus());
 // FS module
 
 const fs = require('fs');
+const { EventEmitter } = require('stream');
 
 // Write in file
 fs.writeFileSync('hello.txt', 'Hello World!');
@@ -45,3 +46,6 @@ fs.readFile('hello.txt', 'utf8', (err, data) => {
     console.log(data);
 });
 
+// EventEmitter
+
+const EventEmitter = require('events');
