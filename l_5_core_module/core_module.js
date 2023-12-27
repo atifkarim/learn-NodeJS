@@ -73,3 +73,15 @@ emitter.emit('multi_data_event', {
     place: 'Bremen',
     date: new Date(),
 });
+
+// Here, an event will import from export_event.js file
+
+const School = require('./export_event');
+
+const school = new School();
+
+school.on('period_ended', ({ place, date }) => {
+    console.log(`Period ended: ${place} at ${date}`);
+});
+
+school.startPeriod();
