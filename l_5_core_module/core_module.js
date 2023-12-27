@@ -1,8 +1,9 @@
 const path = require('path');
 
-const myPath =
-    '/media/ash/BE0E05910E0543BD/University_of_Bremen_MSc/my_git_repos/learn-NodeJS/core_module.js';
-console.log(path.parse(myPath));
+const myPath =    '/media/ash/BE0E05910E0543BD/University_of_Bremen_MSc/my_git_repos/learn-NodeJS/core_module.js';
+console.log('Parse info: ', path.parse(myPath));
+console.log('Basename: ', path.basename(myPath));
+console.log('Directory: ', path.dirname(myPath));
 
 const os = require('os');
 
