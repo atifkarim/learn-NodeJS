@@ -2,9 +2,17 @@ const http = require('http');
 
 // This server actually is a event emitter
 const server = http.createServer((req, res) => {
-    res.write('Hello guys');
-    res.write('Alles Gut!');
-    res.end();
+    if (req.url === '/') {
+        res.write('Hello guys');
+        res.write('Alles Gut!');
+        res.end();
+    } else if (req.url === '/hello') {
+        res.write('Hello World!');
+        res.end();
+    } else {
+        res.write('404 Not Found');
+        res.end();
+    }
 });
 
 server.on('connection', () => {
