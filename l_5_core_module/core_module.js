@@ -2,8 +2,7 @@
 
 const path = require('path');
 
-const myPath =
-    '/media/ash/BE0E05910E0543BD/University_of_Bremen_MSc/my_git_repos/learn-NodeJS/core_module.js';
+const myPath =    '/media/ash/BE0E05910E0543BD/University_of_Bremen_MSc/my_git_repos/learn-NodeJS/core_module.js';
 console.log('Parse info: ', path.parse(myPath));
 console.log('Basename: ', path.basename(myPath));
 console.log('Directory: ', path.dirname(myPath));
@@ -48,3 +47,13 @@ fs.readFile('hello.txt', 'utf8', (err, data) => {
 // EventEmitter
 
 const EventEmitter = require('events');
+
+const emitter = new EventEmitter();
+
+// register an listener for myEvent event
+emitter.on('myEvent', (data) => {
+    console.log(data);
+});
+
+// Raise myEvent event
+emitter.emit('myEvent', 'Raising the event!');
