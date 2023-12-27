@@ -24,3 +24,4 @@ console.log('coreinfo: ', os.cpus());
 const fs = require('fs');
 
 fs.writeFileSync('hello.txt', 'Hello World!');
+fs.appendFileSync('hello.txt', '\nI am fine!');
