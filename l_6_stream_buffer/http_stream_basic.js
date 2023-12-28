@@ -8,11 +8,14 @@ const server = http.createServer((req, res) => {
     if (req.url === '/') {
         res.write('<html><head><title>Form</title></head>');
         res.write(
-            '<body><form method="POST" action="/process"><input name="message" /></form></body>',
+            '<body><form method="POST" action="/process"><input name="message" /></form></body>'
         );
         res.end();
     } else if (req.url === '/process' && req.method === 'POST') {
-        res.write('Hello World!');
+        req.on('data', (data) => {
+            console.log(data);
+        });
+        res.write('Thanks for providing data');
         res.end();
     } else {
         res.write('404 Not Found');
