@@ -1,11 +1,15 @@
+// This file will show process of read and write data in stream
+
 const fs = require('fs');
 
-const ourStream = fs.createReadStream(`${__dirname}/big.txt`);
+const ourReadStream = fs.createReadStream(`${__dirname}/big.txt`);
+const ourWriteStream = fs.createWriteStream(`${__dirname}/big_write.txt`);
 
-ourStream.on('data', (data) => {
-    console.log(data);
+ourReadStream.on('data', (data) => {
+    // console.log(data);
+    ourWriteStream.write(data);
 });
-// ourStream.on('data', (data) => {
+// ourReadStream.on('data', (data) => {
 //     console.log(data.toString());
 // });
 
