@@ -12,8 +12,15 @@ const server = http.createServer((req, res) => {
         );
         res.end();
     } else if (req.url === '/process' && req.method === 'POST') {
+        const body = [];
         req.on('data', (data) => {
-            console.log(data);
+            body.push(data);
+        });
+
+        req.on('end', () => {
+            console.log('Data received');
+            const parseBody = Buffer.concat(body);
+            console.log(parseBody);
         });
         res.write('Thanks for providing data');
         res.end();
