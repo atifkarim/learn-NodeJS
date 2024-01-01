@@ -13,6 +13,7 @@
     "prettier": "^3.1.1"
   },
   "scripts": {
-    "uptime_monitor_api": "nodemon raw_node_project/uptime_monitoring_api/index.js"
+    "uptime_monitor_api": "NODE_ENV=staging nodemon raw_node_project/uptime_monitoring_api/index.js",
+    "uptime_monitor_api_production": "NODE_ENV=production nodemon raw_node_project/uptime_monitoring_api/index.js"
   }
 }
