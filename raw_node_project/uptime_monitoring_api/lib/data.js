@@ -13,7 +13,7 @@ lib.create = (dir, file, data, callback) => {
     // open file for writing
     fs.open(`${lib.basedir + dir}/${file}.json`, 'wx', (err, fileDescriptor) => {
         if (!err && fileDescriptor) {
-            // convert data to stirng
+            // convert data to string
             const stringData = JSON.stringify(data);
 
             // write data to file and then close it
@@ -33,6 +33,13 @@ lib.create = (dir, file, data, callback) => {
         } else {
             callback('There was an error, file may already exists!');
         }
+    });
+};
+
+// read data from file
+lib.read = (dir, file, callback) => {
+    fs.readFile(`${lib.basedir + dir}/${file}.json`, 'utf8', (err, data) => {
+        callback(err, data);
     });
 };
 
