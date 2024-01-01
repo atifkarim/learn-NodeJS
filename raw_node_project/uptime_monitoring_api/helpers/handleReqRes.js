@@ -37,29 +37,35 @@ handler.handleReqRes = (req, res) => {
     };
 
     const decoder = new StringDecoder('utf-8');
-    const realData = '';
+    let realData = '';
 
     const choseHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
-    choseHandler(requestProperties, (statusCode, payLoad) => {
-        statusCode = typeof statusCode === 'number' ? statusCode : 500;
-        payLoad = typeof payLoad === 'object' ? payLoad : {};
 
-        const payLoadString = JSON.stringify(payLoad);
-
-        // return the final response
-        res.writeHead(statusCode);
-        res.end(payLoadString);
+    req.on('data', (chunk) => {
+        realData += decoder.write(chunk);
     });
 
-    // req.on('data', (chunk) => {
-    //     realData += decoder.write(chunk);
-    // });
+    req.on('end', () => {
+        realData += decoder.end();
+        choseHandler(requestProperties, (statusCode, payLoad) => {
+            let statusCodeReassign = 0;
+            statusCodeReassign = typeof statusCode === 'number' ? statusCode : 500;
 
-    // req.on('end', () => {
-    //     realData += decoder.end();
-    //     console.log(realData);
-    // });
-    // // response handel
+            if (statusCodeReassign === 500) {
+                return;
+            }
+
+            let payLoadReassign = '';
+            payLoadReassign = typeof payLoad === 'object' ? payLoad : {};
+
+            const payLoadString = JSON.stringify(payLoadReassign);
+
+            // return the final response
+            res.writeHead(statusCodeReassign);
+            res.end(payLoadString);
+        });
+    });
+    // response handel
     // res.end('new file');
 };
 module.exports = handler;
