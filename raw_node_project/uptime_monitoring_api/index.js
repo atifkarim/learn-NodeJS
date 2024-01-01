@@ -1,5 +1,5 @@
 /*
- * @File Name: app.js
+ * @File Name: index.js
  * @Title: Uptime monitoring application
  * @Description: A RESTFul API to monitor up or down time of user defined links
  * @Author: Atif Karim
@@ -9,8 +9,7 @@
 // dependencies
 
 const http = require('http');
-const { StringDecoder } = require('string_decoder');
-const url = require('url');
+const { handleReqRes } = require('./helpers/handleReqRes.js');
 
 // app object - module scaffolding
 
@@ -33,29 +32,7 @@ app.createServer = () => {
 
 // handle request response
 
-app.handleReqRes = (req, res) => {
-    // request handling
-    // get the url and parse it
-    const parsedUrl = url.parse(req.url, true);
-    const path = parsedUrl.pathname;
-    const trimmedPath = path.replace(/^\/+|\/+$/g, '');
-    const method = req.method.toLowerCase();
-    const queryStringObjet = parsedUrl.query;
-    const headersObject = req.headers;
-
-    const decoder = new StringDecoder('utf-8');
-    let realData = '';
-    req.on('data', (chunk) => {
-        realData += decoder.write(chunk);
-    });
-
-    req.on('end', () => {
-        realData += decoder.end();
-        console.log(realData);
-    });
-    // response handel
-    res.end('hello world');
-};
+app.handleReqRes = handleReqRes;
 
 // start the server
 app.createServer();
