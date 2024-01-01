@@ -11,10 +11,17 @@
 const http = require('http');
 const { handleReqRes } = require('./helpers/handleReqRes.js');
 const environment = require('./helpers/environments.js');
+const data = require('./lib/data');
 
 // app object - module scaffolding
 
 const app = {};
+
+// testing purpose
+
+data.create('test', 'newFile', { land: 'Bangladesh', language: 'English' }, (err) => {
+    console.log('Error is in Index file level : ', err);
+});
 
 // create server
 

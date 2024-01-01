@@ -3,3 +3,4 @@ hello.txt
 l_6_stream_buffer/big.txt
 l_6_stream_buffer/big_write_pipe.txt
 l_6_stream_buffer/big_write.txt
+.data
