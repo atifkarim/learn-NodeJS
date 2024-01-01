@@ -11,7 +11,7 @@
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
 
-// moduel scaffholding
+// module scaffolding
 
 const handler = {};
 
