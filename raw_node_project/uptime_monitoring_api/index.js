@@ -30,9 +30,15 @@ const app = {};
 
 // testing purpose to update file
 
-data.update('test', 'newFile', { land: 'Germany', language: 'Deutsch' }, (err) => {
+// data.update('test', 'newFile', { land: 'Germany', language: 'Deutsch' }, (err) => {
+//     console.log(err);
+// });
+
+// testing purpose to update file
+data.delete('test', 'newFile', (err) => {
     console.log(err);
 });
+
 // create server
 
 app.createServer = () => {
