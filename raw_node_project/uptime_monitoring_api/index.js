@@ -24,10 +24,15 @@ const app = {};
 // });
 
 // testing purpose to read file
-data.read('test', 'newFile', (err, data) => {
-    console.log(err, ' -- ', data);
-});
+// data.read('test', 'newFile', (err, data) => {
+//     console.log(err, ' -- ', data);
+// });
 
+// testing purpose to update file
+
+data.update('test', 'newFile', { land: 'Germany', language: 'Deutsch' }, (err) => {
+    console.log(err);
+});
 // create server
 
 app.createServer = () => {
