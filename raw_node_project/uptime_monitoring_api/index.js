@@ -17,10 +17,15 @@ const data = require('./lib/data');
 
 const app = {};
 
-// testing purpose
+// testing purpose to create file
 
-data.create('test', 'newFile', { land: 'Bangladesh', language: 'English' }, (err) => {
-    console.log('Error is in Index file level : ', err);
+// data.create('test', 'newFile', { land: 'Bangladesh', language: 'bangla' }, (err) => {
+//     console.log('Error is in Index file level : ', err);
+// });
+
+// testing purpose to read file
+data.read('test', 'newFile', (err, data) => {
+    console.log(err, ' -- ', data);
 });
 
 // create server
