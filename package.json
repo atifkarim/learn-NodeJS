@@ -11,5 +11,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^5.1.0",
     "prettier": "^3.1.1"
+  },
+  "scripts": {
+    "start": "nodemon raw_node_project/uptime_monitoring_api/index.js"
   }
 }
