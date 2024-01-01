@@ -9,6 +9,7 @@
 // dependencies
 
 const http = require('http');
+const url = require('url');
 
 // app object - module scaffolding
 
@@ -32,8 +33,17 @@ app.createServer = () => {
 // handle request response
 
 app.handleReqRes = (req, res) => {
+    // request handling
+    // get the url and parse it
+    const parsedUrl = url.parse(req.url, true);
+    const path = parsedUrl.pathname;
+    const trimmedPath = path.replace(/^\/+|\/+$/g, '');
+    const method = req.method.toLowerCase();
+    const queryStringObjet = parsedUrl.query;
+    const headersObject = req.headers;
+    console.log('Header: ', headersObject);
     // response handel
-    res.end('hello germany');
+    res.end('hello world');
 };
 
 // start the server
