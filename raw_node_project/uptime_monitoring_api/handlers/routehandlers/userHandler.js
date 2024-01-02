@@ -6,6 +6,9 @@
  * @Date: 02/01/2024
  */
 
+// dependencies
+const data = require('../../lib/data');
+
 // module scaffolding
 const handler = {};
 
@@ -35,6 +38,28 @@ handler._users.post = (requestProperties, callback) => {
 
     const tosAgreement = typeof requestProperties.body.tosAgreement === 'boolean';
     requestProperties.body.tosAgreement ? requestProperties.body.tosAgreement : false;
+
+    if (firstName && lastName && phone && password && tosAgreement) {
+        // make sure the user does not already exist
+        data.read('users', phone, (err, user) => {
+            // Here error exist means that the file does not exist which is desired here,
+            // Otherwise, a user can not be entries because, file exists means user is
+            // already registered
+            if (err) {
+                const userObject = {
+                    firstName,
+                    lastName,
+                    phone,
+                    password,
+                    tosAgreement,
+                };
+            } else {
+                callback(500, { error: 'Server error: User already exists' });
+            }
+        });
+    } else {
+        callback(400, { error: 'You have a problem in your request' });
+    }
 };
 
 handler._users.get = (requestProperties, callback) => {
