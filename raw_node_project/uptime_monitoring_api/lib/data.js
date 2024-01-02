@@ -11,16 +11,16 @@ lib.basedir = path.join(__dirname, '/../.data/');
 // write data to file
 lib.create = (dir, file, data, callback) => {
     // open file for writing
-    fs.open(`${lib.basedir + dir}/${file}.json`, 'wx', (err, fileDescriptor) => {
-        if (!err && fileDescriptor) {
+    fs.open(`${lib.basedir + dir}/${file}.json`, 'wx', (fileOpenErr, fileDescriptor) => {
+        if (!fileOpenErr && fileDescriptor) {
             // convert data to string
             const stringData = JSON.stringify(data);
 
             // write data to file and then close it
-            fs.writeFile(fileDescriptor, stringData, (err2) => {
-                if (!err2) {
-                    fs.close(fileDescriptor, (err3) => {
-                        if (!err3) {
+            fs.writeFile(fileDescriptor, stringData, (fileWriteErr) => {
+                if (!fileWriteErr) {
+                    fs.close(fileDescriptor, (fileCloseErr) => {
+                        if (!fileCloseErr) {
                             callback(false);
                         } else {
                             callback('Error closing the new file!');
@@ -38,28 +38,28 @@ lib.create = (dir, file, data, callback) => {
 
 // read data from file
 lib.read = (dir, file, callback) => {
-    fs.readFile(`${lib.basedir + dir}/${file}.json`, 'utf8', (err, data) => {
-        callback(err, data);
+    fs.readFile(`${lib.basedir + dir}/${file}.json`, 'utf8', (ReadErr, data) => {
+        callback(ReadErr, data);
     });
 };
 
 // update existing file
 lib.update = (dir, file, data, callback) => {
     // file open for writing
-    fs.open(`${lib.basedir + dir}/${file}.json`, 'r+', (err, fileDescriptor) => {
-        if (!err && fileDescriptor) {
+    fs.open(`${lib.basedir + dir}/${file}.json`, 'r+', (fileOpenErr, fileDescriptor) => {
+        if (!fileOpenErr && fileDescriptor) {
             // convert the data to string
             const stringData = JSON.stringify(data);
 
             // truncate the file
-            fs.ftruncate(fileDescriptor, (err1) => {
-                if (!err1) {
+            fs.ftruncate(fileDescriptor, (fileTruncateErr) => {
+                if (!fileTruncateErr) {
                     // write to the file and close it
-                    fs.writeFile(fileDescriptor, stringData, (err2) => {
-                        if (!err2) {
+                    fs.writeFile(fileDescriptor, stringData, (fileWriteErr) => {
+                        if (!fileWriteErr) {
                             // close the file
-                            fs.close(fileDescriptor, (err3) => {
-                                if (!err3) {
+                            fs.close(fileDescriptor, (fileCloseErr) => {
+                                if (!fileCloseErr) {
                                     callback(false);
                                 } else {
                                     callback('Error closing file!');
@@ -82,8 +82,8 @@ lib.update = (dir, file, data, callback) => {
 // delete existing file
 lib.delete = (dir, file, callback) => {
     // unlink file
-    fs.unlink(`${lib.basedir + dir}/${file}.json`, (err) => {
-        if (!err) {
+    fs.unlink(`${lib.basedir + dir}/${file}.json`, (deleteErr) => {
+        if (!deleteErr) {
             callback(false);
         } else {
             callback('Error deleting file');
