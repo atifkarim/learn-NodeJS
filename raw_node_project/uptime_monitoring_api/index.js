@@ -17,26 +17,26 @@ const data = require('./lib/data');
 
 const app = {};
 
-// testing purpose to create file
-data.create('test', 'newFile', { land: 'Bangladesh', language: 'bangla' }, (createErr) => {
-    console.log('Creating Error : ', createErr);
-});
+// // testing purpose to create file
+// data.create('test', 'newFile', { land: 'Bangladesh', language: 'bangla' }, (createErr) => {
+//     console.log('Creating Error : ', createErr);
+// });
 
-// testing purpose to read file
-data.read('test', 'newFile', (readErr, readData) => {
-    console.log('Read Error: ', readErr, ' -- ', 'Read Data: ', readData);
-});
+// // testing purpose to read file
+// data.read('test', 'newFile', (readErr, readData) => {
+//     console.log('Read Error: ', readErr, ' -- ', 'Read Data: ', readData);
+// });
 
-// testing purpose to update file
+// // testing purpose to update file
 
-data.update('test', 'newFile', { land: 'Germany', language: 'Deutsch' }, (updateErr) => {
-    console.log('Update Error: ', updateErr);
-});
+// data.update('test', 'newFile', { land: 'Germany', language: 'Deutsch' }, (updateErr) => {
+//     console.log('Update Error: ', updateErr);
+// });
 
-// testing purpose to update file
-data.delete('test', 'newFile', (deleteErr) => {
-    console.log('Delete Error: ', deleteErr);
-});
+// // testing purpose to update file
+// data.delete('test', 'newFile', (deleteErr) => {
+//     console.log('Delete Error: ', deleteErr);
+// });
 
 // create server
 
