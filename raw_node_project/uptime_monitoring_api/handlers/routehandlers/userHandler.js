@@ -8,6 +8,7 @@
 
 // dependencies
 const data = require('../../lib/data');
+const { hash } = require('../../helpers/utilities');
 
 // module scaffolding
 const handler = {};
@@ -50,7 +51,7 @@ handler._users.post = (requestProperties, callback) => {
                     firstName,
                     lastName,
                     phone,
-                    password,
+                    password: hash(password),
                     tosAgreement,
                 };
             } else {
