@@ -42,11 +42,11 @@ handler._users.post = (requestProperties, callback) => {
 
     if (firstName && lastName && phone && password && tosAgreement) {
         // make sure the user does not already exist
-        data.read('users', phone, (err, user) => {
+        data.read('users', phone, (readErr) => {
             // Here error exist means that the file does not exist which is desired here,
             // Otherwise, a user can not be entries because, file exists means user is
             // already registered
-            if (err) {
+            if (readErr) {
                 const userObject = {
                     firstName,
                     lastName,
@@ -54,6 +54,16 @@ handler._users.post = (requestProperties, callback) => {
                     password: hash(password),
                     tosAgreement,
                 };
+                // store the user to db
+                data.create('users', phone, userObject, (createErr) => {
+                    if (!createErr) {
+                        callback(200, {
+                            message: 'User was created successfully!',
+                        });
+                    } else {
+                        callback(500, { error: 'Could not create user!' });
+                    }
+                });
             } else {
                 callback(500, { error: 'Server error: User already exists' });
             }
