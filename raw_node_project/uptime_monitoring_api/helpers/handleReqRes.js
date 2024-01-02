@@ -61,6 +61,7 @@ handler.handleReqRes = (req, res) => {
             const payLoadString = JSON.stringify(payLoadReassign);
 
             // return the final response
+            res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCodeReassign);
             res.end(payLoadString);
         });
