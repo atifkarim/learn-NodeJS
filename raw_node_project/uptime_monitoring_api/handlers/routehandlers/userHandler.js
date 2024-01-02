@@ -73,11 +73,11 @@ handler._users.post = (requestProperties, callback) => {
                             message: 'User was created successfully!',
                         });
                     } else {
-                        callback(500, { error: 'Could not create user!' });
+                        callback(404, { error: 'Could not create user!' });
                     }
                 });
             } else {
-                callback(500, { error: 'Server error: User already exists' });
+                callback(404, { error: 'Server error: User already exists' });
             }
         });
     } else {
