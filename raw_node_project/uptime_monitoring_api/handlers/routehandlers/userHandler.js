@@ -92,8 +92,6 @@ handler._users.get = (requestProperties, callback) => {
         && requestProperties.queryStringObject.phone.trim().length === 11
             ? requestProperties.queryStringObject.phone
             : false;
-    console.log('typeof phone: ', requestProperties.queryStringObject);
-    console.log('phone: ', phone);
     if (phone) {
         // lookup the user
         data.read('users', phone, (err, u) => {
