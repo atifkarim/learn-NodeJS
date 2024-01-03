@@ -12,6 +12,7 @@
 const data = require('../../lib/data');
 const { hash } = require('../../helpers/utilities');
 const { parseJSON } = require('../../helpers/utilities');
+const tokenHandler = require('./tokenHandler');
 
 // module scaffolding
 const handler = {};
@@ -93,21 +94,34 @@ handler._users.get = (requestProperties, callback) => {
             ? requestProperties.queryStringObject.phone
             : false;
     if (phone) {
-        // lookup the user
-        data.read('users', phone, (err, u) => {
-            const user = { ...parseJSON(u) };
-            if (!err && user) {
-                delete user.password;
-                callback(200, user);
+        // verify token
+        const token = typeof requestProperties.headersObject.token === 'string'
+                ? requestProperties.headersObject.token
+                : false;
+
+        tokenHandler._token.verify(token, phone, (tokenId) => {
+            if (tokenId) {
+                // lookup the user
+                data.read('users', phone, (err, u) => {
+                    const user = { ...parseJSON(u) };
+                    if (!err && user) {
+                        delete user.password;
+                        callback(200, user);
+                    } else {
+                        callback(404, {
+                            error: 'Requested user was not found!',
+                        });
+                    }
+                });
             } else {
-                callback(404, {
-                    error: 'Requested user object was not found!',
+                callback(403, {
+                    error: 'Authentication failure!',
                 });
             }
         });
     } else {
         callback(404, {
-            error: 'Requested user file was not found!',
+            error: 'Requested user was not found!',
         });
     }
 };
@@ -119,21 +133,18 @@ handler._users.put = (requestProperties, callback) => {
         ? requestProperties.body.phone
         : false;
 
-    const firstName =
-        typeof requestProperties.body.firstName === 'string' &&
-        requestProperties.body.firstName.trim().length > 0
+    const firstName = typeof requestProperties.body.firstName === 'string'
+        && requestProperties.body.firstName.trim().length > 0
             ? requestProperties.body.firstName
             : false;
 
-    const lastName =
-        typeof requestProperties.body.lastName === 'string' &&
-        requestProperties.body.lastName.trim().length > 0
+    const lastName = typeof requestProperties.body.lastName === 'string'
+        && requestProperties.body.lastName.trim().length > 0
             ? requestProperties.body.lastName
             : false;
 
-    const password =
-        typeof requestProperties.body.password === 'string' &&
-        requestProperties.body.password.trim().length > 0
+    const password = typeof requestProperties.body.password === 'string'
+        && requestProperties.body.password.trim().length > 0
             ? requestProperties.body.password
             : false;
 
@@ -186,9 +197,8 @@ handler._users.put = (requestProperties, callback) => {
 
 handler._users.delete = (requestProperties, callback) => {
     // check the phone number if valid
-    const phone =
-        typeof requestProperties.queryStringObject.phone === 'string' &&
-        requestProperties.queryStringObject.phone.trim().length === 11
+    const phone = typeof requestProperties.queryStringObject.phone === 'string'
+        && requestProperties.queryStringObject.phone.trim().length === 11
             ? requestProperties.queryStringObject.phone
             : false;
 
