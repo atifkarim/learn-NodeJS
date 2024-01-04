@@ -9,13 +9,21 @@
 // dependencies
 
 const http = require('http');
+require('dotenv').config();
 const { handleReqRes } = require('./helpers/handleReqRes.js');
 const environment = require('./helpers/environments.js');
 const data = require('./lib/data');
 
+const { sendTwilioSms } = require('./helpers/notifications');
+
 // app object - module scaffolding
 
 const app = {};
+
+// @TODO remove later
+// sendTwilioSms('01749619761', 'Hello world', (err) => {
+//     console.log('Twilio Error this is the error', err);
+// });
 
 // // testing purpose to create file
 // data.create('test', 'newFile', { land: 'Bangladesh', language: 'bangla' }, (createErr) => {

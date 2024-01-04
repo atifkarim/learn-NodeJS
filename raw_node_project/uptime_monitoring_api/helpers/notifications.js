@@ -10,17 +10,29 @@
 const https = require('https');
 const querystring = require('querystring');
 const { twilio } = require('./environments');
+require('dotenv').config();
 
 // module scaffolding
 const notifications = {};
 
+const { twilio_fromPhone } = process.env;
+console.log('twilio_fromPhone: ', twilio_fromPhone);
+
+const { twilio_accountSid } = process.env;
+console.log('twilio_accountSid: ', twilio_accountSid);
+
+const { twilio_authToken } = process.env;
+console.log('twilio_authToken: ', twilio_authToken);
+
 // send sms to user using twilio api
 notifications.sendTwilioSms = (phone, msg, callback) => {
     // input validation
-    const userPhone =        typeof phone === 'string' && phone.trim().length === 11 ? phone.trim() : false;
+    const userPhone =
+        typeof phone === 'string' && phone.trim().length === 11 ? phone.trim() : false;
     console.log('User phone: ', userPhone);
 
-    const userMsg =        typeof msg === 'string' && msg.trim().length > 0 && msg.trim().length <= 1600
+    const userMsg =
+        typeof msg === 'string' && msg.trim().length > 0 && msg.trim().length <= 1600
             ? msg.trim()
             : false;
     console.log('userMsg: ', userMsg);
