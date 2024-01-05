@@ -9,38 +9,35 @@
 // dependencies
 const https = require('https');
 const querystring = require('querystring');
-const { twilio } = require('./environments');
 require('dotenv').config();
 
 // module scaffolding
 const notifications = {};
 
-const { twilio_fromPhone } = process.env;
-console.log('twilio_fromPhone: ', twilio_fromPhone);
+const { twilioFromPhone } = process.env;
+console.log('twilioFromPhone: ', twilioFromPhone);
 
-const { twilio_accountSid } = process.env;
-console.log('twilio_accountSid: ', twilio_accountSid);
+const { twilioAccountSid } = process.env;
+console.log('twilioAccountSid: ', twilioAccountSid);
 
-const { twilio_authToken } = process.env;
-console.log('twilio_authToken: ', twilio_authToken);
+const { twilioAuthToken } = process.env;
+console.log('twilioAuthToken: ', twilioAuthToken);
 
 // send sms to user using twilio api
 notifications.sendTwilioSms = (phone, msg, callback) => {
     // input validation
-    const userPhone =
-        typeof phone === 'string' && phone.trim().length === 11 ? phone.trim() : false;
-    console.log('User phone: ', userPhone);
+    const userPhone =        typeof phone === 'string' && phone.trim().length === 11 ? phone.trim() : false;
 
-    const userMsg =
-        typeof msg === 'string' && msg.trim().length > 0 && msg.trim().length <= 1600
+    const userMsg =        typeof msg === 'string' && msg.trim().length > 0 && msg.trim().length <= 1600
             ? msg.trim()
             : false;
-    console.log('userMsg: ', userMsg);
+    console.log('userPhone: ', userPhone);
 
     if (userPhone && userMsg) {
         // configure the request payload
         const payload = {
-            From: twilio.fromPhone,
+            From: twilioFromPhone,
+            // From: twilio.fromPhone,
             To: `+49${userPhone}`,
             Body: userMsg,
         };
@@ -52,8 +49,10 @@ notifications.sendTwilioSms = (phone, msg, callback) => {
         const requestDetails = {
             hostname: 'api.twilio.com',
             method: 'POST',
-            path: `/2010-04-01/Accounts/${twilio.accountSid}/Messages.json`,
-            auth: `${twilio.accountSid}:${twilio.authToken}`,
+            path: `/2010-04-01/Accounts/${twilioAccountSid}/Messages.json`,
+            auth: `${twilioAccountSid}:${twilioAuthToken}`,
+            // path: `/2010-04-01/Accounts/${twilio.accountSid}/Messages.json`,
+            // auth: `${twilio.accountSid}:${twilio.authToken}`,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -63,9 +62,10 @@ notifications.sendTwilioSms = (phone, msg, callback) => {
         const req = https.request(requestDetails, (res) => {
             // get the status of the sent request
             const status = res.statusCode;
+            console.log('status: ', status);
             // callback successfully if the request went through
             if (status === 200 || status === 201) {
-                callback(false);
+                callback(true);
             } else {
                 callback(`Status code returned was ${status}`);
             }

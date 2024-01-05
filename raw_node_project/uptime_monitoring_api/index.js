@@ -20,10 +20,13 @@ const { sendTwilioSms } = require('./helpers/notifications');
 
 const app = {};
 
+// Get user phone number
+const { myPhone } = process.env;
+
 // @TODO remove later
-// sendTwilioSms('01749619761', 'Hello world', (err) => {
-//     console.log('Twilio Error this is the error', err);
-// });
+sendTwilioSms(`${myPhone}`, 'Hello world', (err) => {
+    console.log('Twilio Error this is the error', err);
+});
 
 // // testing purpose to create file
 // data.create('test', 'newFile', { land: 'Bangladesh', language: 'bangla' }, (createErr) => {
