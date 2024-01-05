@@ -12,9 +12,20 @@
 
 const worker = {};
 
+// timer to execute the worker process per minute
+
+worker.loop = () => {
+    setInterval(() => {
+        worker.gatherAllChecks();
+    }, 1000 * 60);
+};
+
 // start the worker
 worker.init = () => {
-    console.log('worker started');
+    // execute all the  checks
+    worker.gatherAllChecks();
+    // call the loop so that hecks continue
+    worker.loop();
 };
 
 // export
