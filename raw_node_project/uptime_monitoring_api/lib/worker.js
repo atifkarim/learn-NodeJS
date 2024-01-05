@@ -38,6 +38,29 @@ worker.gatherAllChecks = () => {
         }
     });
 };
+
+// validate individual check data
+worker.validateCheckData = (originalCheckData) => {
+    const originalData = originalCheckData;
+    if (originalCheckData && originalCheckData.id) {
+        originalData.state =
+            typeof originalCheckData.state === 'string' &&
+            ['up', 'down'].indexOf(originalCheckData.state) > -1
+                ? originalCheckData.state
+                : 'down';
+
+        originalData.lastChecked =
+            typeof originalCheckData.lastChecked === 'number' && originalCheckData.lastChecked > 0
+                ? originalCheckData.lastChecked
+                : false;
+
+        // pass to the next process
+        worker.performCheck(originalData);
+    } else {
+        console.log('Error: check was invalid or not properly formatted!');
+    }
+};
+
 // timer to execute the worker process per minute
 
 worker.loop = () => {
