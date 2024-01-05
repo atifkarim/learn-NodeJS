@@ -61,6 +61,71 @@ worker.validateCheckData = (originalCheckData) => {
     }
 };
 
+// perform check
+worker.performCheck = (originalCheckData) => {
+    // prepare the initial check outcome
+    let checkOutCome = {
+        error: false,
+        responseCode: false,
+    };
+    // mark the outcome has not been sent yet
+    let outcomeSent = false;
+
+    // parse the hostname & full url from original data
+    const parsedUrl = url.parse(`${originalCheckData.protocol}://${originalCheckData.url}`, true);
+    const hostName = parsedUrl.hostname;
+    const { path } = parsedUrl;
+
+    // construct the request
+    const requestDetails = {
+        protocol: `${originalCheckData.protocol}:`,
+        hostname: hostName,
+        method: originalCheckData.method.toUpperCase(),
+        path,
+        timeout: originalCheckData.timeoutSeconds * 1000,
+    };
+
+    const protocolToUse = originalCheckData.protocol === 'http' ? http : https;
+
+    const req = protocolToUse.request(requestDetails, (res) => {
+        // grab the status of the response
+        const status = res.statusCode;
+        // update the check outcome and pass to the next process
+        checkOutCome.responseCode = status;
+        if (!outcomeSent) {
+            worker.processCheckOutcome(originalCheckData, checkOutCome);
+            outcomeSent = true;
+        }
+    });
+
+    req.on('error', (e) => {
+        checkOutCome = {
+            error: true,
+            value: e,
+        };
+        // update the check outcome and pass to the next process
+        if (!outcomeSent) {
+            worker.processCheckOutcome(originalCheckData, checkOutCome);
+            outcomeSent = true;
+        }
+    });
+
+    req.on('timeout', () => {
+        checkOutCome = {
+            error: true,
+            value: 'timeout',
+        };
+        // update the check outcome and pass to the next process
+        if (!outcomeSent) {
+            worker.processCheckOutcome(originalCheckData, checkOutCome);
+            outcomeSent = true;
+        }
+    });
+
+    // req send
+    req.end();
+};
+
 // timer to execute the worker process per minute
 
 worker.loop = () => {
