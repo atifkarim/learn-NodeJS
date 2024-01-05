@@ -12,6 +12,7 @@ const http = require('http');
 const https = require('https');
 const data = require('./data');
 const { parseJSON } = require('../helpers/utilities');
+const { sendTwilioSms } = require('../helpers/notifications');
 
 // worker object - module scaffolding
 
@@ -160,12 +161,26 @@ worker.processCheckOutcome = (originalCheckData, checkOutCome) => {
     });
 };
 
+// send notification sms to user if state changes
+worker.alertUserToStatusChange = (newCheckData) => {
+    const msg = `Alert: Your check for ${newCheckData.method.toUpperCase()} ${
+        newCheckData.protocol
+    }://${newCheckData.url} is currently ${newCheckData.state}`;
+
+    sendTwilioSms(newCheckData.userPhone, msg, (err) => {
+        if (!err) {
+            console.log(`User was alerted to a status change via SMS: ${msg}`);
+        } else {
+            console.log('There was a problem sending sms to one of the user!');
+        }
+    });
+};
 // timer to execute the worker process per minute
 
 worker.loop = () => {
     setInterval(() => {
         worker.gatherAllChecks();
-    }, 1000 * 60);
+    }, 5000);
 };
 
 // start the worker
